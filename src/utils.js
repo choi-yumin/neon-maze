@@ -15,7 +15,7 @@ const difficultyScale = (level) =>
 /**
  * @param {number} baseInterval
  * @param {Function} onTrigger
- * @returns {Function} update(deltaTime, level) 함수
+ * @returns {Function}
  */
 const createPeriodicTrigger = (baseInterval, onTrigger) => {
   let elapsed = 0;
@@ -85,7 +85,6 @@ const drawNeonCircle = (p, x, y, r, color) => {
 };
 
 /**
- * 랜덤 네온 컬러 반환
  */
 const randomNeonColor = () => {
   const colors = [
