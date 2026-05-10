@@ -2,8 +2,6 @@
   - [Basic Information](#basic-information)
   - [Neon Maze](#neon-maze)
     - [Features](#features)
-    - [Game Mechanics](#game-mechanics)
-    - [Technical Implementation](#technical-implementation)
 
 # Individual Project
 
@@ -34,11 +32,7 @@ Navigate the maze using WASD or Arrow Keys while surviving periodic blackouts, s
   - Each level starts with a time limit
   - Initial timer: 2 minutes
   - Every level reduces available time by 10 seconds
-    Higher levels increase:
-    blackout frequency
-    wall-shift intensity
-    visibility pressure
-
-### Game Mechanics
-
-### Technical Implementation
+  - Higher levels increase:
+    - blackout frequency
+    - wall-shift intensity
+    - visibility pressure
