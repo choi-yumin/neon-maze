@@ -1,0 +1,175 @@
+// ============================================================
+// MazeGenerator.js — 미로 생성 (Recursive Backtracker)
+//   생성 후 BFS로 시작→끝 경로 보장
+// ============================================================
+
+class MazeGenerator {
+  constructor() {
+    this.grid = [];
+  }
+
+  /**
+   * 새 미로 생성 (풀이 가능 보장)
+   * @returns {Cell[]}
+   */
+  generate() {
+    this.grid = this._createGrid();
+    this._carve();
+    this._ensureSolvable();
+    return this.grid;
+  }
+
+  _createGrid() {
+    return Array.from(
+      { length: CONFIG.COLS * CONFIG.ROWS },
+      (_, i) => new Cell(i % CONFIG.COLS, Math.floor(i / CONFIG.COLS)),
+    );
+  }
+
+  /**
+   * Recursive Backtracker
+   * @private
+   */
+  _carve() {
+    const stack = [];
+    const start = this.grid[0];
+    start.visited = true;
+    stack.push(start);
+
+    while (stack.length > 0) {
+      const current = stack[stack.length - 1];
+      const neighbors = current.getUnvisitedNeighbors(this.grid);
+
+      if (neighbors.length > 0) {
+        const next = neighbors[Math.floor(Math.random() * neighbors.length)];
+        current.removeWallBetween(next);
+        next.visited = true;
+        stack.push(next);
+      } else {
+        stack.pop();
+      }
+    }
+
+    this.grid.forEach((cell) => (cell.visited = false));
+  }
+
+  /**
+   * BFS로 시작→끝 경로 확인, 없으면 벽 제거
+   * @private
+   */
+  _ensureSolvable() {
+    const path = this.findPath(0, 0, CONFIG.COLS - 1, CONFIG.ROWS - 1);
+    if (path) return; // 이미 풀이 가능
+
+    // 경로가 없으면 강제로 뚫기
+    const visited = new Set();
+    const queue = [this.grid[0]];
+    visited.add(this.grid[0]);
+
+    while (queue.length > 0) {
+      const current = queue.shift();
+      const neighbors = this.getPassableNeighbors(current);
+      for (const n of neighbors) {
+        if (!visited.has(n)) {
+          visited.add(n);
+          queue.push(n);
+        }
+      }
+    }
+
+    // 방문한 영역에서 미방문 영역으로 벽 제거
+    for (const cell of this.grid) {
+      if (!visited.has(cell)) continue;
+      const dirs = [
+        { wall: "top", dc: 0, dr: -1 },
+        { wall: "right", dc: 1, dr: 0 },
+        { wall: "bottom", dc: 0, dr: 1 },
+        { wall: "left", dc: -1, dr: 0 },
+      ];
+      for (const { wall, dc, dr } of dirs) {
+        const nIdx = gridIndex(cell.col + dc, cell.row + dr);
+        if (nIdx !== -1 && !visited.has(this.grid[nIdx])) {
+          cell.removeWallBetween(this.grid[nIdx]);
+          // 재귀적으로 다시 확인
+          return this._ensureSolvable();
+        }
+      }
+    }
+  }
+
+  /**
+   * BFS 경로 탐색
+   * @param {number} sc - 시작 열
+   * @param {number} sr - 시작 행
+   * @param {number} ec - 끝 열
+   * @param {number} er - 끝 행
+   * @returns {Cell[]|null} 경로 또는 null
+   */
+  findPath(sc, sr, ec, er) {
+    const startIdx = gridIndex(sc, sr);
+    const endIdx = gridIndex(ec, er);
+    if (startIdx === -1 || endIdx === -1) return null;
+
+    const start = this.grid[startIdx];
+    const end = this.grid[endIdx];
+    const visited = new Set();
+    const parent = new Map();
+    const queue = [start];
+    visited.add(start);
+
+    while (queue.length > 0) {
+      const current = queue.shift();
+      if (current === end) {
+        // 경로 역추적
+        const path = [];
+        let node = end;
+        while (node) {
+          path.unshift(node);
+          node = parent.get(node);
+        }
+        return path;
+      }
+
+      const neighbors = this.getPassableNeighbors(current);
+      for (const n of neighbors) {
+        if (!visited.has(n)) {
+          visited.add(n);
+          parent.set(n, current);
+          queue.push(n);
+        }
+      }
+    }
+
+    return null;
+  }
+
+  draw(p) {
+    this.grid.forEach((cell) => cell.draw(p));
+  }
+
+  getCellAt(px, py) {
+    const col = Math.floor(px / CONFIG.CELL_W);
+    const row = Math.floor(py / CONFIG.CELL_H);
+    const idx = gridIndex(col, row);
+    return idx !== -1 ? this.grid[idx] : null;
+  }
+
+  getPassableNeighbors(cell) {
+    const result = [];
+    const dirs = [
+      { wall: "top", dc: 0, dr: -1 },
+      { wall: "right", dc: 1, dr: 0 },
+      { wall: "bottom", dc: 0, dr: 1 },
+      { wall: "left", dc: -1, dr: 0 },
+    ];
+
+    dirs.forEach(({ wall, dc, dr }) => {
+      if (!cell.hasWall(wall)) {
+        const idx = gridIndex(cell.col + dc, cell.row + dr);
+        if (idx !== -1) result.push(this.grid[idx]);
+      }
+    });
+
+    return result;
+  }
+}
