@@ -1,7 +1,3 @@
-// ============================================================
-// Game.js — 게임 컨트롤러 (상태 머신 + 카운트다운)
-// ============================================================
-
 class Game {
   static STATE = {
     TITLE: "title",
@@ -26,8 +22,6 @@ class Game {
     this.goalCol = CONFIG.COLS - 1;
     this.goalRow = CONFIG.ROWS - 1;
   }
-
-  // ── 키보드 이벤트 위임 ──────────────────────────
 
   handleKeyDown(kc) {
     if (this.state === Game.STATE.PLAYING) {
@@ -55,8 +49,6 @@ class Game {
     }
   }
 
-  // ── 게임 흐름 ──────────────────────────────────
-
   start() {
     this.level = 1;
     this._initLevel();
@@ -70,7 +62,6 @@ class Game {
     this.blackout.reset();
     this.shifter.reset();
 
-    // 레벨이 올라갈수록 시간 제한이 줄어듭니다
     const levelPenalty = (this.level - 1) * 10;
     const seconds = Math.max(20, CONFIG.TIME_LIMIT_BASE - levelPenalty);
     this.timeLimit = seconds * 1000;
@@ -85,8 +76,6 @@ class Game {
     this.state = Game.STATE.PLAYING;
     this.lastTime = millis();
   }
-
-  // ── 업데이트 ───────────────────────────────────
 
   update(p) {
     const now = millis();
@@ -103,10 +92,8 @@ class Game {
   }
 
   _updatePlaying(p, dt) {
-    // 카운트다운
     this.timeRemaining -= dt;
 
-    // 시간 초과 → 게임 오버
     if (this.timeRemaining <= 0) {
       this.timeRemaining = 0;
       this.state = Game.STATE.GAME_OVER;
@@ -127,8 +114,6 @@ class Game {
       this.state = Game.STATE.LEVEL_CLEAR;
     }
   }
-
-  // ── 렌더링 ────────────────────────────────────
 
   draw(p) {
     switch (this.state) {

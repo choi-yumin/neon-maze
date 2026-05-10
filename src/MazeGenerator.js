@@ -1,8 +1,3 @@
-// ============================================================
-// MazeGenerator.js — 미로 생성 (Recursive Backtracker)
-//   생성 후 BFS로 시작→끝 경로 보장
-// ============================================================
-
 class MazeGenerator {
   constructor() {
     this.grid = [];
@@ -54,14 +49,12 @@ class MazeGenerator {
   }
 
   /**
-   * BFS로 시작→끝 경로 확인, 없으면 벽 제거
    * @private
    */
   _ensureSolvable() {
     const path = this.findPath(0, 0, CONFIG.COLS - 1, CONFIG.ROWS - 1);
     if (path) return; // 이미 풀이 가능
 
-    // 경로가 없으면 강제로 뚫기
     const visited = new Set();
     const queue = [this.grid[0]];
     visited.add(this.grid[0]);
@@ -77,7 +70,6 @@ class MazeGenerator {
       }
     }
 
-    // 방문한 영역에서 미방문 영역으로 벽 제거
     for (const cell of this.grid) {
       if (!visited.has(cell)) continue;
       const dirs = [
@@ -98,7 +90,6 @@ class MazeGenerator {
   }
 
   /**
-   * BFS 경로 탐색
    * @param {number} sc - 시작 열
    * @param {number} sr - 시작 행
    * @param {number} ec - 끝 열
@@ -120,7 +111,6 @@ class MazeGenerator {
     while (queue.length > 0) {
       const current = queue.shift();
       if (current === end) {
-        // 경로 역추적
         const path = [];
         let node = end;
         while (node) {

@@ -11,7 +11,7 @@
 - Name: Yu Min Choi
 - ID: 20220899
 - Email: yumin.choi@kaist.ac.kr
-- [Repository](https://git.prototyping.id/20220899/homework5)
+- [Repository](https://github.com/choi-yumin/neon-maze)
 
 ## Neon Maze
 

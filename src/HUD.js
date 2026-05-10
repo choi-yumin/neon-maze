@@ -1,7 +1,3 @@
-// ============================================================
-// HUD.js — 타이머(카운트다운), 레벨, 상태 표시
-// ============================================================
-
 class HUD {
   constructor() {
     this.message = "";
@@ -30,10 +26,8 @@ class HUD {
     p.push();
     p.textFont("Orbitron");
 
-    // 레벨 (좌상단)
     this._drawGlowText(p, `LV ${level}`, 16, 30, 20, CONFIG.COLORS.CYAN);
 
-    // 카운트다운 타이머 (우상단) — 10초 이하면 빨갛게
     const timeStr = this._formatCountdown(timeRemaining);
     const timeColor =
       timeRemaining <= 10000 ? CONFIG.COLORS.RED : CONFIG.COLORS.YELLOW;
@@ -52,7 +46,6 @@ class HUD {
     p.drawingContext.shadowBlur = 0;
     p.pop();
 
-    // 타이머 바 (상단)
     const barW = CONFIG.CANVAS_W - 32;
     const barH = 4;
     const barX = 16;
@@ -69,7 +62,6 @@ class HUD {
     p.fill(p.red(bc), p.green(bc), p.blue(bc), 200);
     p.rect(barX, barY, barW * ratio, barH, 2);
 
-    // 상태 인디케이터
     let statusY = 58;
     if (blackoutActive) {
       this._drawGlowText(
@@ -86,14 +78,12 @@ class HUD {
       this._drawGlowText(p, "◉ SHIFTING", 16, statusY, 12, CONFIG.COLORS.PINK);
     }
 
-    // 조작 안내 (좌하단)
     p.textFont("Rajdhani");
     p.textAlign(p.LEFT, p.BOTTOM);
     p.textSize(11);
     p.fill("#ffffff44");
     p.text("WASD / Arrow Keys", 16, CONFIG.CANVAS_H - 12);
 
-    // 중앙 메시지
     if (this.messageTimer > 0) {
       const fadeAlpha = Math.min(1, this.messageTimer / 500);
       p.push();

@@ -1,9 +1,4 @@
-// ============================================================
-// utils.js — 유틸리티 & 고차 함수 (Higher-Order Functions)
-// ============================================================
-
 /**
- * 2D 인덱스 → 1D 인덱스 변환
  */
 const gridIndex = (col, row) => {
   if (col < 0 || row < 0 || col >= CONFIG.COLS || row >= CONFIG.ROWS) return -1;
@@ -11,17 +6,15 @@ const gridIndex = (col, row) => {
 };
 
 /**
- * 레벨에 따른 난이도 스케일 팩터
- * @param {number} level - 현재 레벨 (1~)
- * @returns {number} 1.0 이상의 스케일 팩터
+ * @param {number} level
+ * @returns {number}
  */
 const difficultyScale = (level) =>
   1 + (level - 1) * CONFIG.LEVEL_DIFFICULTY_SCALE;
 
 /**
- * 고차 함수: 주기적 이벤트 트리거 생성기
- * @param {number} baseInterval - 기본 주기(ms)
- * @param {Function} onTrigger - 트리거 시 실행할 콜백
+ * @param {number} baseInterval
+ * @param {Function} onTrigger
  * @returns {Function} update(deltaTime, level) 함수
  */
 const createPeriodicTrigger = (baseInterval, onTrigger) => {
