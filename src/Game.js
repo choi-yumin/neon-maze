@@ -174,7 +174,6 @@ class Game {
     this.hud.drawGoal(p, this.goalCol, this.goalRow);
     this.shifter.draw(p);
 
-    // 암전: 플레이어 마커(마젠타 색상)의 위치를 중심으로 밝게 처리
     this.blackout.draw(p, { x: this.player.x, y: this.player.y });
     this.player.draw(p);
 

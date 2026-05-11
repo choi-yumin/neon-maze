@@ -11,6 +11,7 @@
 - ID: 20220899
 - Email: yumin.choi@kaist.ac.kr
 - [Repository](https://github.com/choi-yumin/neon-maze)
+- [Video]()
 
 ## Neon Maze
 

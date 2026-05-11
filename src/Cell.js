@@ -1,11 +1,7 @@
-// ============================================================
-// Cell.js — 미로의 개별 셀 클래스
-// ============================================================
-
 class Cell {
   /**
-   * @param {number} col - 열 인덱스
-   * @param {number} row - 행 인덱스
+   * @param {number} col
+   * @param {number} row
    */
   constructor(col, row) {
     this.col = col;
@@ -14,7 +10,6 @@ class Cell {
     this.visited = false;
   }
 
-  /** 셀의 픽셀 좌표 (좌상단) */
   get x() {
     return this.col * CONFIG.CELL_W;
   }
@@ -22,7 +17,6 @@ class Cell {
     return this.row * CONFIG.CELL_H;
   }
 
-  /** 셀의 중심 픽셀 좌표 */
   get centerX() {
     return this.x + CONFIG.CELL_W / 2;
   }
@@ -31,9 +25,8 @@ class Cell {
   }
 
   /**
-   * 방문하지 않은 이웃 셀 반환
-   * @param {Cell[]} grid - 전체 그리드 배열
-   * @returns {Cell[]} 방문 안 한 이웃 목록
+   * @param {Cell[]} grid
+   * @returns {Cell[]}
    */
   getUnvisitedNeighbors(grid) {
     const neighbors = [];
@@ -55,8 +48,7 @@ class Cell {
   }
 
   /**
-   * 두 셀 사이의 벽 제거
-   * @param {Cell} other - 인접 셀
+   * @param {Cell} other
    */
   removeWallBetween(other) {
     const dx = other.col - this.col;
@@ -81,8 +73,7 @@ class Cell {
   }
 
   /**
-   * 셀의 벽 그리기 (네온 스타일)
-   * @param {p5} p - p5 인스턴스
+   * @param {p5} p
    */
   draw(p) {
     const { x, y } = this;
@@ -98,8 +89,7 @@ class Cell {
   }
 
   /**
-   * 특정 방향에 벽이 있는지 확인
-   * @param {string} direction - 'top'|'right'|'bottom'|'left'
+   * @param {string} direction
    * @returns {boolean}
    */
   hasWall(direction) {

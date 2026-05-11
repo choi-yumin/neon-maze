@@ -53,7 +53,6 @@ class MazeShifter {
       );
     };
 
-    // 변형 전 상태 저장 (롤백용)
     const backup = grid.map((c) => ({
       top: c.walls.top,
       right: c.walls.right,
@@ -107,7 +106,6 @@ class MazeShifter {
       changed++;
     }
 
-    // 풀이 가능 여부 확인 → 불가능하면 롤백
     const path = maze.findPath(0, 0, CONFIG.COLS - 1, CONFIG.ROWS - 1);
     if (!path) {
       // 롤백

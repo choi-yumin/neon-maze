@@ -1,5 +1,3 @@
-/**
- */
 const gridIndex = (col, row) => {
   if (col < 0 || row < 0 || col >= CONFIG.COLS || row >= CONFIG.ROWS) return -1;
   return col + row * CONFIG.COLS;
@@ -34,19 +32,14 @@ const createPeriodicTrigger = (baseInterval, onTrigger) => {
 };
 
 /**
- * 고차 함수: 값을 부드럽게 보간하는 lerp 생성기
- * @param {number} speed - 보간 속도 (0~1)
+ * @param {number} speed
  * @returns {Function} (current, target) => newValue
  */
 const createSmoothLerp = (speed) => {
   return (current, target) => current + (target - current) * speed;
 };
 
-/**
- * 네온 글로우 효과 그리기
- */
 const drawNeonLine = (p, x1, y1, x2, y2, color, weight = 2) => {
-  // 외부 글로우
   p.push();
   p.strokeWeight(weight + 6);
   p.stroke(p.color(color + "33"));
@@ -63,9 +56,6 @@ const drawNeonLine = (p, x1, y1, x2, y2, color, weight = 2) => {
   p.pop();
 };
 
-/**
- * 네온 글로우 원 그리기
- */
 const drawNeonCircle = (p, x, y, r, color) => {
   p.push();
   p.noStroke();
@@ -84,8 +74,6 @@ const drawNeonCircle = (p, x, y, r, color) => {
   p.pop();
 };
 
-/**
- */
 const randomNeonColor = () => {
   const colors = [
     CONFIG.COLORS.CYAN,

@@ -4,7 +4,6 @@ class MazeGenerator {
   }
 
   /**
-   * 새 미로 생성 (풀이 가능 보장)
    * @returns {Cell[]}
    */
   generate() {
@@ -22,7 +21,6 @@ class MazeGenerator {
   }
 
   /**
-   * Recursive Backtracker
    * @private
    */
   _carve() {
@@ -53,7 +51,7 @@ class MazeGenerator {
    */
   _ensureSolvable() {
     const path = this.findPath(0, 0, CONFIG.COLS - 1, CONFIG.ROWS - 1);
-    if (path) return; // 이미 풀이 가능
+    if (path) return;
 
     const visited = new Set();
     const queue = [this.grid[0]];
@@ -82,7 +80,6 @@ class MazeGenerator {
         const nIdx = gridIndex(cell.col + dc, cell.row + dr);
         if (nIdx !== -1 && !visited.has(this.grid[nIdx])) {
           cell.removeWallBetween(this.grid[nIdx]);
-          // 재귀적으로 다시 확인
           return this._ensureSolvable();
         }
       }
@@ -90,11 +87,11 @@ class MazeGenerator {
   }
 
   /**
-   * @param {number} sc - 시작 열
-   * @param {number} sr - 시작 행
-   * @param {number} ec - 끝 열
-   * @param {number} er - 끝 행
-   * @returns {Cell[]|null} 경로 또는 null
+   * @param {number} sc
+   * @param {number} sr
+   * @param {number} ec
+   * @param {number} er
+   * @returns {Cell[]|null}
    */
   findPath(sc, sr, ec, er) {
     const startIdx = gridIndex(sc, sr);

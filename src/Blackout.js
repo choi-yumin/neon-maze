@@ -1,13 +1,7 @@
-// ============================================================
-// Blackout.js — 암전 & 손전등 시스템
-//   암전 시: 전체 화면이 완전히 검어지고,
-//   마우스 포인터 주변만 원형으로 밝게 보임
-// ============================================================
-
 class Blackout {
   constructor() {
     this.active = false;
-    this.opacity = 0; // 0=밝음, 1=완전암전
+    this.opacity = 0;
     this.targetOpacity = 0;
     this.flashlightRadius = CONFIG.FLASHLIGHT_RADIUS_BASE;
     this.isWarning = false;
@@ -65,13 +59,10 @@ class Blackout {
   }
 
   /**
-   * 암전 오버레이 렌더링
-   * 전체를 검은 사각형으로 덮고, 파티클 주변을 밝게 처리
    * @param {p5} p
    * @param {Array<{x:number,y:number}>} lightSources
    */
   draw(p, lightSources) {
-    // 경고 깜빡임
     if (this.isWarning) {
       const flicker = Math.sin(p.millis() * 0.02) > 0 ? 0.3 : 0;
       p.push();
@@ -95,7 +86,6 @@ class Blackout {
 
     ctx.save();
 
-    // 전체 화면을 어둡게 칠함
     ctx.fillStyle = `rgba(0,0,0,${0.97 * op})`;
     ctx.fillRect(0, 0, CONFIG.CANVAS_W, CONFIG.CANVAS_H);
 
@@ -120,7 +110,6 @@ class Blackout {
     ctx.globalCompositeOperation = "source-over";
     ctx.restore();
 
-    // 파티클 주변에 부드러운 광휘 추가
     if (sources.length > 0) {
       sources.forEach((source) => {
         const sx = source.x;
